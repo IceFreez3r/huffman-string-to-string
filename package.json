@@ -1,0 +1,15 @@
+{
+	"name": "huffman-s2s",
+	"version": "1.0.0",
+	"type": "module",
+	"scripts": {
+		"build": "tsc",
+		"test": "vitest --coverage"
+	},
+	"devDependencies": {
+		"@tsconfig/recommended": "^1.0.2",
+		"@vitest/coverage-v8": "^0.33.0",
+		"typescript": "^5.1.6",
+		"vitest": "^0.33.0"
+	}
+}
