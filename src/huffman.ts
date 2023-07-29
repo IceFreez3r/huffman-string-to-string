@@ -1,9 +1,18 @@
-import { IHuffmanCodes, THuffmanTree, THuffmanTreeWithFrequencies } from "./huffman.types";
+type THuffmanChar = string;
 
-export default class HuffmanEncoding {
+type THuffmanTree = [THuffmanTree, THuffmanTree] | THuffmanChar;
+
+type THuffmanTreeWithFrequencies = [THuffmanTree, number][];
+
+interface IHuffmanCodes {
+    [char: THuffmanChar]: [prefix: number, length: number];
+}
+
+
+class HuffmanEncoding {
     constructor() {}
 
-    encode(text: string) {
+    static encode(text: string) {
         if (text.length === 0) {
             return { compressed: "", codes: {}, skipLast: 0 };
         }
@@ -13,7 +22,7 @@ export default class HuffmanEncoding {
         return this.encodeString(text, codes);
     }
 
-    getFrequencies(text: string) {
+    static getFrequencies(text: string) {
         return text.split("").reduce((result, char) => {
             result[char] ??= 0;
             result[char]++;
@@ -21,7 +30,7 @@ export default class HuffmanEncoding {
         }, {} as Record<string, number>);
     }
 
-    treeFromFrequencies(frequencies: Record<string, number>): THuffmanTree {
+    static treeFromFrequencies(frequencies: Record<string, number>): THuffmanTree {
         const tree: THuffmanTreeWithFrequencies = Object.entries(frequencies);
         if (tree.length === 1) {
             return tree[0][0];
@@ -35,7 +44,7 @@ export default class HuffmanEncoding {
         return tree[0][0];
     }
 
-    codesFromTree(tree: THuffmanTree): IHuffmanCodes {
+    static codesFromTree(tree: THuffmanTree): IHuffmanCodes {
         const codes: IHuffmanCodes = {};
         const recurse = (node: THuffmanTree, prefix: number, length: number) => {
             if (typeof node === "string") {
@@ -49,7 +58,7 @@ export default class HuffmanEncoding {
         return codes;
     }
 
-    encodeString(input: string, codes: IHuffmanCodes) {
+    static encodeString(input: string, codes: IHuffmanCodes) {
         let intermediate = 0;
         let currentLength = 0;
         let compressed = "";
@@ -72,12 +81,12 @@ export default class HuffmanEncoding {
         return { compressed, codes, skipLast };
     }
 
-    decode(compressed: string, codes: IHuffmanCodes, skipLast: number) {
+    static decode(compressed: string, codes: IHuffmanCodes, skipLast: number) {
         const tree = this.treeFromCodes(codes);
         return this.decodeString(compressed, tree, skipLast);
     }
 
-    treeFromCodes(codes: IHuffmanCodes): THuffmanTree {
+    static treeFromCodes(codes: IHuffmanCodes): THuffmanTree {
         const tree: THuffmanTree = ["", ""];
         for (const [char, [prefix, length]] of Object.entries(codes)) {
             let node = tree;
@@ -94,7 +103,7 @@ export default class HuffmanEncoding {
         return tree;
     }
 
-    decodeString(compressed: string, tree: THuffmanTree, skipLast: number): string {
+    static decodeString(compressed: string, tree: THuffmanTree, skipLast: number): string {
         let result = "";
         let node = tree;
         for (let i = 0; i < compressed.length; i++) {

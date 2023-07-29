@@ -4,6 +4,8 @@
         "types": [
             "vitest/importMeta"
         ],
+        "module": "ES6",
+        "lib": ["ES2017"],
         "outDir": "dist",
     },
     "include": [

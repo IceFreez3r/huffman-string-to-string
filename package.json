@@ -1,9 +1,9 @@
 {
 	"name": "huffman-s2s",
 	"version": "1.0.0",
-	"type": "module",
+	"type": "commonjs",
 	"scripts": {
-		"build": "tsc",
+		"build": "tsc --watch",
 		"test": "vitest --coverage"
 	},
 	"devDependencies": {
